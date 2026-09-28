@@ -25,7 +25,7 @@ Pada tugas ini dilakukan 2 modifikasi bermakna pada program biodata mahasiswa:
 ![Output Sebelum](screenshoot/output_sebelum.png)
 
 ### Kodingan Sesudah Modifikasi
-![Code Sesudah](screenshoot/output_sesudah.png)
+![Code Sesudah](screenshoot/code_sesudah.png)
 
 ### Output Sesudah Modifikasi
 ![Output Sesudah](screenshoot/output_sesudah.png)
