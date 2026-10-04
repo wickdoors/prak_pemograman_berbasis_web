@@ -87,13 +87,12 @@ ALTER TABLE `mata_kuliah`
 
 ## 5. Bukti Screenshots Modifikasi
 
-*(Silakan lampirkan gambar pendukung di laporan Anda)*
+### tampilan Sebelum Modifikasi
+![tampilan Sebelum](SS/tampilan_sebelum.png)
 
-| **Sebelum Modifikasi** | **Sesudah Modifikasi** | 
-![Code Sebelum](SS/Cuplikan layar 2026-10-04 202513.png)
+### tampilan Sesudah Modifikasi
+![tampilan Sesudah](SS/tampilan_sesudah.png)
 
-### Output Sebelum Modifikasi
-![Output Sebelum](screenshoot/Cuplikan layar 2026-10-04 204412.png)
 
 | *Tampilan query/tabel awal* | *Tampilan hasil setelah ditambah constraint & kolom baru* | 
 
