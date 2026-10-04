@@ -1,40 +1,108 @@
-# Tugas Praktikum - Pertemuan 3
+# Laporan Praktikum Pemrograman Berbasis Web - Pertemuan 3
 
-## 1. Modifikasi Program
-Pada tugas ini dilakukan 2 modifikasi bermakna pada database `akademik1` (khususnya tabel `mahasiswa`)[cite: 1, 2, 3, 5, 6]:
-1. **Penambahan Field Baru (`status_aktif`)**: Menambahkan kolom `status_aktif` bertipe `ENUM('aktif', 'cuti', 'lulus')` dengan nilai default `'aktif'` untuk mencatat status keaktifan mahasiswa[cite: 1, 3, 5, 6].
-2. **Validasi Data IPK (`CHECK Constraint`)**: Menambahkan constraint `CHECK` pada kolom `ipk` untuk memvalidasi rentang nilai IPK (0.00 - 4.00)[cite: 1, 3, 5, 6].
+## 1. Ringkasan
 
----
+Dokumentasi ini berisi pelaksanaan Tugas Praktikum Individu untuk basis data akademik (`akademik1.sql`). Praktikum ini mencakup pembuatan struktur tabel relasional (Dosen, Mahasiswa, Mata Kuliah, dan KRS), implementasi *Foreign Key constraints*, pembatasan *Uniqueness*, serta manipulasi data dasar.
 
-## 2. Penjelasan 5 Bagian Kode Paling Penting
-1. **`CREATE TABLE mahasiswa`**: Mengatur `nim` sebagai *Primary Key* untuk mencegah duplikasi data[cite: 2, 5], serta menerapkan atribut `status_aktif` dan constraint `CHECK` untuk menjaga rentang IPK (0.00 - 4.00)[cite: 1, 3, 5, 6].
-2. **`ALTER TABLE krs` (Relasi Foreign Key Mahasiswa)**: Mengaitkan tabel `krs` ke tabel `mahasiswa`[cite: 2, 5]. Aturan `ON DELETE CASCADE` dan `ON UPDATE CASCADE` memastikan jika data mahasiswa dihapus/diubah, data KRS terkait akan diperbarui otomatis demi menjaga integritas data[cite: 2, 5, 6].
-3. **`ALTER TABLE mata_kuliah` (Relasi Foreign Key Dosen)**: Menghubungkan tabel `mata_kuliah` ke `dosen`[cite: 2, 5]. Opsi `ON DELETE SET NULL` memastikan jika data dosen dihapus, data mata kuliah tetap ada dengan kolom `nidn` diubah menjadi `NULL`[cite: 2, 5, 6].
-4. **`UNIQUE KEY uq_krs` pada Tabel `krs`**: Memastikan tidak ada pengulangan pengisian KRS sehingga seorang mahasiswa tidak dapat mengambil mata kuliah yang sama lebih dari satu kali dalam semester dan tahun ajaran yang sama[cite: 2, 5, 6].
-5. **`INSERT INTO mahasiswa`**: Query DML untuk mengisikan data master awal mahasiswa sebagai bahan pengujian awal sebelum tabel transaksi KRS diisi[cite: 2, 5, 6].
+## 2. Struktur Basis Data (`akademik1.sql`)
 
----
+Database terdiri dari 4 tabel utama yang terhubung secara relasional:
 
-## 3. Screenshot Sebelum dan Sesudah Modifikasi
+* **`dosen`**: Menyimpan data pengajar (`nidn` \[PK\], `nama`, `email` \[UNIQUE\]).
 
-### Kodingan/Struktur Sebelum Modifikasi
-Struktur tabel `mahasiswa` awal sebelum ditambahkan kolom/fungsi baru[cite: 1, 3, 6]:
-![Sebelum Modifikasi](pertemuan3/SS/Cuplikan layar 2026-10-04 202513.png)
+* **`mahasiswa`**: Menyimpan data mahasiswa (`nim` \[PK\], `nama`, `email` \[UNIQUE\], `prodi`, `angkatan`, `ipk`, `status_aktif`).
 
-### Output/Hasil Sesudah Modifikasi
-Struktur tabel `mahasiswa` setelah ditambahkan kolom `status_aktif` dan constraint validasi IPK[cite: 1, 3, 6]:
-![Sesudah Modifikasi](pertemuan3/SS/Cuplikan layar 2026-10-04 204412.png)
+* **`mata_kuliah`**: Menyimpan mata kuliah (`kode_mk` \[PK\], `nama_mk`, `sks`, `nidn` \[FK ke dosen\]).
 
----
+* **`krs`**: Tabel transaksi/kartu rencana studi (`id` \[PK AUTO_INCREMENT\], `nim` \[FK ke mahasiswa\], `kode_mk` \[FK ke mata_kuliah\], `semester`, `tahun_ajaran`, `nilai_huruf`).
 
-## 4. Error yang Pernah Muncul
-* **Error**: `#1050 - Table 'mahasiswa' already exists`[cite: 4, 6]
-* **Penyebab**: Terjadi konflik saat pembuatan tabel baru karena tabel bernama `mahasiswa` sudah ada sebelumnya di dalam database `akademik1`[cite: 2, 4, 5, 6].
-* **Langkah Perbaikan**: Menghapus tabel berelasi (`krs`) dan tabel induk (`mahasiswa`) terlebih dahulu menggunakan perintah `DROP TABLE IF EXISTS` sebelum meng-import skema baru[cite: 2, 5, 6], atau memperbarui struktur tabel menggunakan perintah `ALTER TABLE`[cite: 6]:
-  ```sql
-  ALTER TABLE `mahasiswa` 
-  ADD COLUMN `status_aktif` ENUM('aktif', 'cuti', 'lulus') NOT NULL DEFAULT 'aktif' AFTER `ipk`;
+## 3. Modifikasi yang Dilakukan
 
-  ALTER TABLE `mahasiswa` 
-  ADD CONSTRAINT `chk_ipk_range` CHECK (`ipk` BETWEEN 0.00 AND 4.00);
+Sesuai instruksi tugas, dilakukan minimal dua modifikasi bermakna pada program/database:
+
+1. **Modifikasi 1: Penambahan Field & Default Constraint pada Tabel `mahasiswa`**
+
+   * **Deskripsi:** Menambahkan kolom `ipk` dengan tipe data `DECIMAL(3,2)` dan pengaturan default `status_aktif` menggunakan `ENUM('aktif','cuti','lulus')`.
+
+   * **Tujuan:** Memungkinkan pencatatan performa akademik mahasiswa dan status keaktifan secara terstruktur.
+
+2. **Modifikasi 2: Constraint Unik Gabungan (*Composite Unique Key*) pada Tabel `krs`**
+
+   * **Deskripsi:** Menambahkan constraint `UNIQUE KEY uq_krs (nim, kode_mk, semester, tahun_ajaran)`.
+
+   * **Tujuan:** Mencegah terjadinya duplikasi pengambilan mata kuliah yang sama oleh mahasiswa dalam satu semester dan tahun ajaran yang sama (Validasi integritas data).
+
+## 4. Penjelasan 5 Bagian Kode Paling Penting
+
+### A. Pengaturan Constraint *Foreign Key* dengan `ON DELETE CASCADE`
+
+```
+ALTER TABLE `krs`
+  ADD CONSTRAINT `fk_krs_mahasiswa` 
+  FOREIGN KEY (`nim`) REFERENCES `mahasiswa` (`nim`) 
+  ON DELETE CASCADE ON UPDATE CASCADE;
+
+```
+
+> **Penjelasan:** Bagian ini menjaga referensial integritas antara tabel `krs` dan `mahasiswa`. Menggunakan `ON DELETE CASCADE` memastikan jika data mahasiswa dihapus, data KRS yang berhubungan akan otomatis ikut terhapus sehingga tidak ada *orphan data*.
+
+### B. Validasi Unik Gabungan pada Tabel KRS
+
+```
+ADD UNIQUE KEY `uq_krs` (`nim`, `kode_mk`, `semester`, `tahun_ajaran`);
+
+```
+
+> **Penjelasan:** Mencegah input ganda. Seorang mahasiswa tidak bisa menginputkan `kode_mk` yang sama lebih dari sekali pada semester dan tahun ajaran yang sama.
+
+### C. Constraint *Set Null* pada Mata Kuliah
+
+```
+ALTER TABLE `mata_kuliah`
+  ADD CONSTRAINT `fk_mk_dosen` 
+  FOREIGN KEY (`nidn`) REFERENCES `dosen` (`nidn`) 
+  ON DELETE SET NULL ON UPDATE CASCADE;
+
+```
+
+> **Penjelasan:** Mengatur hubungan antara Dosen Pengampu dan Mata Kuliah. Jika data Dosen dihapus, kolom `nidn` di tabel `mata_kuliah` tidak ikut terhapus melainkan diubah menjadi `NULL` (`ON DELETE SET NULL`).
+
+### D. Tipe Data Enum & Default Value
+
+```
+`status_aktif` enum('aktif','cuti','lulus') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'aktif'
+
+```
+
+> **Penjelasan:** Membatasi nilai input pada kolom `status_aktif` hanya pada 3 pilihan pasti, serta otomatis menetapkan status awal mahasiswa baru sebagai `'aktif'`.
+
+### E. Auto Increment Primary Key
+
+```
+`id` bigint UNSIGNED NOT NULL AUTO_INCREMENT
+
+```
+
+> **Penjelasan:** Menjadikan kolom `id` sebagai penanda unik (*Primary Key*) otomatis untuk setiap transaksi KRS yang masuk, guna mempermudah query dan manajemen *record*.
+
+## 5. Bukti Screenshots Modifikasi
+
+*(Silakan lampirkan gambar pendukung di laporan Anda)*
+
+| **Sebelum Modifikasi** | **Sesudah Modifikasi** | 
+| `![Sebelum] (pertemuan3/SS/Cuplikan layar 2026-10-04 202513.png)` | `![Sesudah] (pertemuan3/SS/Cuplikan layar 2026-10-04 204412.png)` | 
+| *Tampilan query/tabel awal* | *Tampilan hasil setelah ditambah constraint & kolom baru* | 
+
+## 6. Analisis Error dan Perbaikannya
+
+* **Error yang Pernah Muncul:**
+  `ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails`
+
+* **Penyebab:**
+  Terjadi saat mencoba memasukkan data transaksi baru ke tabel `krs` menggunakan `nim` atau `kode_mk` yang belum terdaftar di tabel master (`mahasiswa` / `mata_kuliah`).
+
+* **Langkah Perbaikan:**
+
+  1. Pastikan data induk (*parent row*) pada tabel `mahasiswa` dan `mata_kuliah` disiapkan/di-insert terlebih dahulu.
+
+  2. Lakukan pengecekan ulang nilai `nim` dan `kode_mk` pada query `INSERT INTO krs` agar sesuai dengan data yang tersedia di database.
