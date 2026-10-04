@@ -90,7 +90,11 @@ ALTER TABLE `mata_kuliah`
 *(Silakan lampirkan gambar pendukung di laporan Anda)*
 
 | **Sebelum Modifikasi** | **Sesudah Modifikasi** | 
-| ![Sebelum] (pertemuan3/SS/Cuplikan layar 2026-10-04 202513.png)| ![Sesudah] (pertemuan3/SS/Cuplikan layar 2026-10-04 204412.png) | 
+![Code Sebelum](SS/Cuplikan layar 2026-10-04 202513.png)
+
+### Output Sebelum Modifikasi
+![Output Sebelum](screenshoot/Cuplikan layar 2026-10-04 204412.png)
+
 | *Tampilan query/tabel awal* | *Tampilan hasil setelah ditambah constraint & kolom baru* | 
 
 ## 6. Analisis Error dan Perbaikannya
