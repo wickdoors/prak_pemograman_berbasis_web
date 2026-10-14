@@ -8,7 +8,7 @@
 ---
 
 ## 1. Tampilan Awal Database
-![Tampilan Awal](SS/sebelum.jpg)
+![Tampilan Awal](SS/sebelum.png)
 
 Tampilan awal tabel `mahasiswa` pada pangkalan data `akademik1` sebelum dilakukan manipulasi data lanjutan.
 
@@ -48,11 +48,11 @@ Pada Pertemuan 4 ini, dilakukan beberapa operasi manipulasi data (DML) serta pen
 ## 3. Screenshot Hasil Modifikasi & Pengurutan
 
 ### A. Tabel `mahasiswa` Setelah Penghapusan & Perubahan Email
-![Data Setelah Modifikasi](SS/sesudah.jpg)
+![Data Setelah Modifikasi](SS/sesudah.png)
 > *Keterangan: Menampilkan tabel `mahasiswa` di phpMyAdmin setelah data mahasiswa `ais` dihapus dan email `dika` diperbarui.*
 
 ### B. Hasil Pengurutan IPK Mahasiswa Terbesar
-![Pengurutan IPK Terbesar](SS/ipk.jpg)
+![Pengurutan IPK Terbesar](SS/ipk.png)
 > *Keterangan: Menampilkan data mahasiswa yang telah diurutkan berdasarkan IPK tertinggi (`krisna kopit` dengan IPK 4.00 di posisi teratas).*
 
 ---
