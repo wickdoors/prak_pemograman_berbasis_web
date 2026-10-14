@@ -8,7 +8,7 @@
 ---
 
 ## 1. Tampilan Awal Database
-![Tampilan Awal](SS/sebelum.png)
+![Tampilan Awal](SS/hapus.png)
 
 Tampilan awal tabel `mahasiswa` pada pangkalan data `akademik1` sebelum dilakukan manipulasi data lanjutan.
 
