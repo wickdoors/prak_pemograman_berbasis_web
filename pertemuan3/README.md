@@ -8,7 +8,7 @@
 ---
 
 ## 1. Contoh Pertemuan 3
-![Struktur Database](screenshoot/sblmm.png)
+![Struktur Database](SS/sblmm.png)
 
 Seluruh skrip SQL Pertemuan 3 pada pangkalan data `akademik1` telah berhasil dijalankan tanpa error kritis.
 
